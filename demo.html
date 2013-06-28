@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<title>CodePress - Real Time Syntax Highlighting Editor written in JavaScript</title>
+
+	<style>
+	body {color:#000;background-color:white;font:15px georgia, "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif; letter-spacing:0.01em;margin:15px;}
+	p {margin:0 0 15px 0;}
+	a,a:visited {color:#7f0055;}
+	select {background:#ffffe1;}
+	button {margin-top:5px;}
+	button.actions {width:171px;font-family:arial;}
+	h1 {color:#7f0055;margin:0;padding:0;font-size:42px;font-weight:normal;}
+	h1 a {text-decoration:none;}
+	h2 {margin:0;}
+	h2 a {text-decoration:none;font-weight:normal;font-size:22px;color:black !important;}
+	h3 {font-size:20px;font-weight:normal;padding:0;margin:25px 0 5px 0;color:#7f0055;font-weight:bold;border-bottom:2px dotted #d8d8d8;}
+	h4 {font-size:18px;font-weight:normal;z-index:0;}	
+	code {color:#0080c0;font-size:13px;font-weight:bold;}
+	ol, ul {padding:5px 0 5px 25px;margin:0;}
+	ol li, ul li {margin:8px 0 8px 0;}
+	
+	#logo {text-align:center;background-color:#d6d6d6;padding:10px;-moz-border-radius:5px;border:1px solid silver;}
+	#container {width:700px;margin:20px auto;padding:25px;border:3px solid #d9d9d9;-moz-border-radius:10px;background:#f8f8f8;}
+	#languages {margin:5px 0;}
+	
+	#menu {width:100%;background:#7f0055;-moz-border-radius:4px;}
+	#menu a {font:bold 17px georgia;color:white;padding:4px;display:block;border-left:1px solid white;text-align:center;text-decoration:none;}
+	#menu a:hover {background:#b9669e;} 
+
+	.hidden-code {display:none;}
+	.copycode {border:1px dotted gray;padding:10px;background:white;font-family:monospace;color:gray}
+	</style>
+</head>
+
+<body>
+	<div id="container">
+
+		<div id="logo">
+			<h1><a href="http://codepress.org/">CodePress</a></h1>
+			<h2><a href="http://codepress.org/">Online Real Time Syntax Highlighting Editor</a></h2>
+		</div>
+
+		<h3>Demo</h3>
+
+		<textarea id="codepress" class="codepress javascript" style="width:700px;height:200px;" wrap="off">
+//set language
+this.setLanguage = function() {
+	if(arguments[0]) {
+		language = (typeof(Content.languages[arguments[0]])!='undefined') ? arguments[0] : this.setLanguage();
+		cpLanguage.innerHTML = Content.languages[language].name;
+		if(cpBody.document.designMode=='on') cpBody.document.designMode = 'off';
+		CodePress.loadScript(cpBody.document, '../languages/'+language+'.js', function () { cpBody.CodePress.syntaxHighlight('init'); })
+		cpBody.document.getElementById('cp-lang-style').href = '../languages/'+language+'.css';
+		this.hideMenu();
+	}
+	else {
+		var extension = filename.replace(/.*\.([^\.]+)$/,'$1');
+		var aux = false;
+		for(lang in Content.languages) {
+			extensions = ','+Content.languages[lang].extensions+',';
+			if(extensions.match(','+extension+',')) aux = lang;
+		}
+		language = (aux) ? aux : 'generic';
+	}
+}
+		</textarea>
+
+		<p>
+			<button class="actions" onclick="alert(codepress.getCode())">get code from editor</button>
+			<button class="actions" onclick="codepress.toggleEditor()">turn on/off CodePress</button>
+			<button class="actions" onclick="codepress.toggleLineNumbers()">show/hide line numbers</button>
+			<button class="actions" onclick="codepress.toggleAutoComplete()">turn on/off auto-complete</button>
+			<button class="actions" onclick="codepress.toggleReadOnly()">turn on/off read only</button>
+		</p>
+	</div>
+
+	<script src="codepress.js"></script>
+</body>
+</html>

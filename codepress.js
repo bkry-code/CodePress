@@ -9,7 +9,9 @@
  * Read the full licence: http://www.opensource.org/licenses/lgpl-license.php
  */
 
-CodePress = function(obj) {
+var CodePress = function(obj) {
+	"use strict";
+
 	var self = document.createElement('iframe');
 	self.textarea = obj;
 	self.textarea.disabled = true;
@@ -24,7 +26,8 @@ CodePress = function(obj) {
 	self.options = self.textarea.className;
 	
 	self.initialize = function() {
-		self.editor = self.contentWindow.CodePress;
+		// self.editor = self.contentWindow.CodePress;
+		self.editor = self.contentWindow;
 		self.editor.body = self.contentWindow.document.getElementsByTagName('body')[0];
 		self.editor.setCode(self.textarea.value);
 		self.setOptions();
@@ -33,7 +36,7 @@ CodePress = function(obj) {
 		self.style.position = 'static';
 		self.style.visibility = 'visible';
 		self.style.display = 'inline';
-	}
+	};
 	
 	// obj can by a textarea id or a string (code)
 	self.edit = function(obj,language) {
@@ -43,42 +46,42 @@ CodePress = function(obj) {
 		self.src = CodePress.path+'codepress.html?language='+self.language+'&ts='+(new Date).getTime();
 		if(self.attachEvent) self.attachEvent('onload',self.initialize);
 		else self.addEventListener('load',self.initialize,false);
-	}
+	};
 
 	self.getLanguage = function() {
-		for (language in CodePress.languages) 
+		for (var language in CodePress.languages) 
 			if(self.options.match('\\b'+language+'\\b')) 
 				return CodePress.languages[language] ? language : 'generic';
-	}
+	};
 	
 	self.setOptions = function() {
 		if(self.options.match('autocomplete-off')) self.toggleAutoComplete();
 		if(self.options.match('readonly-on')) self.toggleReadOnly();
 		if(self.options.match('linenumbers-off')) self.toggleLineNumbers();
-	}
+	};
 	
 	self.getCode = function() {
 		return self.textarea.disabled ? self.editor.getCode() : self.textarea.value;
-	}
+	};
 
-	self.setCode = function(code) {
+	self.editor.setCode = function(code) {
 		self.textarea.disabled ? self.editor.setCode(code) : self.textarea.value = code;
-	}
+	};
 
 	self.toggleAutoComplete = function() {
 		self.editor.autocomplete = (self.editor.autocomplete) ? false : true;
-	}
+	};
 	
 	self.toggleReadOnly = function() {
 		self.textarea.readOnly = (self.textarea.readOnly) ? false : true;
 		if(self.style.display != 'none') // prevent exception on FF + iframe with display:none
 			self.editor.readOnly(self.textarea.readOnly ? true : false);
-	}
+	};
 	
 	self.toggleLineNumbers = function() {
 		var cn = self.editor.body.className;
 		self.editor.body.className = (cn==''||cn=='show-line-numbers') ? 'hide-line-numbers' : 'show-line-numbers';
-	}
+	};
 	
 	self.toggleEditor = function() {
 		if(self.textarea.disabled) {
@@ -86,8 +89,7 @@ CodePress = function(obj) {
 			self.textarea.disabled = false;
 			self.style.display = 'none';
 			self.textarea.style.display = 'inline';
-		}
-		else {
+		} else {
 			self.textarea.disabled = true;
 			self.setCode(self.textarea.value);
 			self.editor.syntaxHighlight('init');
@@ -98,26 +100,25 @@ CodePress = function(obj) {
 
 	self.edit();
 	return self;
-}
+};
 
 CodePress.languages = {	
-	csharp : 'C#', 
-	css : 'CSS', 
-	generic : 'Generic',
-	html : 'HTML',
-	java : 'Java', 
-	javascript : 'JavaScript', 
-	perl : 'Perl', 
-	ruby : 'Ruby',	
-	php : 'PHP', 
-	text : 'Text', 
-	sql : 'SQL',
-	vbscript : 'VBScript'
-}
-
+	csharp:     'C#', 
+	css:        'CSS', 
+	generic:    'Generic',
+	html:       'HTML',
+	java:       'Java', 
+	javascript: 'JavaScript', 
+	perl:       'Perl', 
+	ruby:       'Ruby',	
+	php:        'PHP', 
+	text:       'Text', 
+	sql:        'SQL',
+	vbscript:   'VBScript'
+};
 
 CodePress.run = function() {
-	s = document.getElementsByTagName('script');
+	var s = document.getElementsByTagName('script');
 	for(var i=0,n=s.length;i<n;i++) {
 		if(s[i].src.match('codepress.js')) {
 			CodePress.path = s[i].src.replace('codepress.js','');
@@ -125,14 +126,14 @@ CodePress.run = function() {
 	}
 	t = document.getElementsByTagName('textarea');
 	for(var i=0,n=t.length;i<n;i++) {
-		if(t[i].className.match('codepress')) {
+		if(t[i].className.match(/codepress/)) {
 			id = t[i].id;
 			t[i].id = id+'_cp';
 			eval(id+' = new CodePress(t[i])');
 			t[i].parentNode.insertBefore(eval(id), t[i]);
-		} 
+		}
 	}
-}
+};
 
 if(window.attachEvent) window.attachEvent('onload',CodePress.run);
 else window.addEventListener('DOMContentLoaded',CodePress.run,false);
