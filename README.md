@@ -5,6 +5,7 @@ Originally written by Fernando M.A.d.S. and Michael Hurni. Read more about the o
 
 # License
 **The original license remains intact.**
+
 CodePress is distributed under the LGPL. If your software is compatible with this licence or it is under Creative Commons, you can use it as you want. Just keep the credits somewhere around.
 
 To know a little more about this project, go to the about section.
