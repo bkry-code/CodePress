@@ -1,9 +1,11 @@
 /*
  * CodePress regular expressions for JavaScript syntax highlighting
  */
- 
+
+var Language = {};
+
 // JavaScript
-Language.syntax = [ 
+Language.syntax = [
 	{ input : /\"(.*?)(\"|<br>|<\/P>)/g, output : '<s>"$1$2</s>' }, // strings double quote
 	{ input : /\'(.*?)(\'|<br>|<\/P>)/g, output : '<s>\'$1$2</s>' }, // strings single quote
 	{ input : /\b(break|continue|do|for|new|this|void|case|default|else|function|return|typeof|while|if|label|switch|var|with|catch|boolean|int|try|false|throws|null|true|goto)\b/g, output : '<b>$1</b>' }, // reserved words
@@ -24,7 +26,7 @@ Language.complete = [
 	{ input : '"', output : '"$0"' },
 	{ input : '(', output : '\($0\)' },
 	{ input : '[', output : '\[$0\]' },
-	{ input : '{', output : '{\n\t$0\n}' }		
+	{ input : '{', output : '{\n\t$0\n}' }
 ]
 
 Language.shortcuts = []

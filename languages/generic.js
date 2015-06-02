@@ -1,7 +1,9 @@
 /*
  * CodePress regular expressions for generic syntax highlighting
  */
- 
+
+var Language = {};
+
 // generic languages
 Language.syntax = [
 	{ input : /\"(.*?)(\"|<br>|<\/P>)/g, output : '<s>"$1$2</s>' }, // strings double quote
@@ -19,7 +21,7 @@ Language.complete = [
 	{ input : '"', output : '"$0"' },
 	{ input : '(', output : '\($0\)' },
 	{ input : '[', output : '\[$0\]' },
-	{ input : '{', output : '{\n\t$0\n}' }		
+	{ input : '{', output : '{\n\t$0\n}' }
 ]
 
 Language.shortcuts = []

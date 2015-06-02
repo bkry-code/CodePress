@@ -2,6 +2,8 @@
  * CodePress regular expressions for CSS syntax highlighting
  */
 
+ var Language = {};
+
 // CSS
 Language.syntax = [
 	{ input : /(.*?){(.*?)}/g,output : '<b>$1</b>{<u>$2</u>}' }, // tags, ids, classes, values
@@ -17,7 +19,7 @@ Language.complete = [
 	{ input : '"', output : '"$0"' },
 	{ input : '(', output : '\($0\)' },
 	{ input : '[', output : '\[$0\]' },
-	{ input : '{', output : '{\n\t$0\n}' }		
+	{ input : '{', output : '{\n\t$0\n}' }
 ]
 
 Language.shortcuts = []
